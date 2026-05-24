@@ -5,12 +5,14 @@
     "paths": {
       "~/*": ["./*"]
     },
+    "ignoreDeprecations": "6.0",
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
+
   "include": [
     "**/*.ts",
     "**/*.tsx",
