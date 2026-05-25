@@ -8,6 +8,9 @@ const getPath = generatePath("/authentication");
 
 import {createUserWithEmailAndPasswordOutputModel , createUserWithEmailAndPasswordInputModel} from "./model"
 import { userService } from "../../services";
+import { setAuthenticationCookie } from "../../utils/cookie";
+
+
 
 export const authRouter = router({
   createUserWithEmailAndPassword : publicProcedure
@@ -19,10 +22,12 @@ export const authRouter = router({
     .input(createUserWithEmailAndPasswordInputModel)
     .output(createUserWithEmailAndPasswordOutputModel)
     .mutation(
-      async ({input})=>{
+      async ({input , ctx})=>{
         const {fullName , email , password } = input
 
-        const {id} = await userService.createUserWithEmailAndPassword({fullName , email , password})
+        const {id , token} = await userService.createUserWithEmailAndPassword({fullName , email , password})
+        
+        setAuthenticationCookie(ctx , token)
 
         return {
           id
