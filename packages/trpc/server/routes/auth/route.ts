@@ -1,6 +1,6 @@
  
  
-import { publicProcedure , router }from "../../trpc"; 
+import { authenticatedProcedure, publicProcedure , router }from "../../trpc"; 
 import { generatePath } from "../../utils/path-generator";
 
 const TAGS = ["Authentication"];
@@ -60,7 +60,9 @@ export const authRouter = router({
       };
     }),
 
-  verifyAndDecodeUserToken: publicProcedure
+
+
+  verifyAndDecodeUserToken: publicProcedure  // In future Change this route to authenticated Procedure
     .meta({
       openapi: {
         method: "GET",
