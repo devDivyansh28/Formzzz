@@ -29,6 +29,13 @@
       "when": 1779791694963,
       "tag": "0003_nifty_ikaris",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779816970873,
+      "tag": "0004_medical_kronos",
+      "breakpoints": true
     }
   ]
 }
