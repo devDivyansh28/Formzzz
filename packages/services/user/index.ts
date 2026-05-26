@@ -28,6 +28,30 @@ class UserService {
   private async generateHash(password : string , salt : string){
     return  createHmac('sha256',salt).update(password).digest('hex');
   }
+  
+  private async verifyUserToken(token : string): Promise<GenerateUserTokenPayloadType> {
+    try{
+       return JWT.verify(token, env.JWT_SECRET) as GenerateUserTokenPayloadType
+    }catch(error){
+      throw new Error("Invalid Token Please Register Again !!!")
+    }
+    
+  }
+
+  private async getUserById(id : string){
+    const response = await db.select(
+      {id : usersTable.id,
+       email : usersTable.email,
+       fullName : usersTable.fullName,
+       profileImageUrl : usersTable.profileImageUrl
+      }
+
+    ).from(usersTable).where(eq(usersTable.id , id))
+
+    if(!response || response.length===0)  throw new Error("Something went wrong !!!");
+
+    return response[0]!;
+  }
 
   public async createUserWithEmailAndPassword(payload : CreateUserWithEmailAndPasswordInputType){
      
@@ -88,6 +112,19 @@ class UserService {
         token
       }
 
+  }
+
+  public async verifyAndDecodeUserToken(token : string){
+    
+     const {id} = await this.verifyUserToken(token)
+
+    
+     const userInfo = await this.getUserById(id)
+
+
+     return {...userInfo}
+
+    
   }
 
 }

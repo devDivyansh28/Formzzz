@@ -10,14 +10,18 @@ import { useSignup } from "~/hooks/api/auth";
 import { trpc } from "~/trpc/client";
 import { LoginForm } from "./login-form";
 import Link from "next/link";
-
+import {useRouter} from "next/navigation"
 type SignupFormValues = {
   name: string;
   email: string;
   password: string;
 };
 
+
+
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+
+  const router = useRouter();
  
   const {
     createUserWithEmailAndPasswordAsync
@@ -48,6 +52,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     try {
       console.log("Signup Form Submitted:", values);
       const {id } = await createUserWithEmailAndPasswordAsync({fullName : values.name , email : values.email , password : values.password} )
+      router.replace("/dashboard");
       console.log(id)
 
       // Example future API call:

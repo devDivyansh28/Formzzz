@@ -19,15 +19,20 @@ import { useLogin } from "~/hooks/api/auth"
 
 import { useForm ,} from "react-hook-form"
 
+import {useRouter} from "next/navigation"
+
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
+
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const router = useRouter();
   
    const {loginUserWithEmailAndPasswordAsync} = useLogin()
    const {
@@ -48,6 +53,7 @@ export function LoginForm({
     try{
       const {id} = await loginUserWithEmailAndPasswordAsync({email : values.email , password : values.password});
       console.log(`Id Recieved is ${id}`)
+      router.replace("/dashboard");
 
     }catch(error : any){
      if (error.name === "email") {

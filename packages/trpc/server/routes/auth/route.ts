@@ -6,9 +6,9 @@ import { generatePath } from "../../utils/path-generator";
 const TAGS = ["Authentication"];
 const getPath = generatePath("/authentication");
 
-import {createUserWithEmailAndPasswordOutputModel , createUserWithEmailAndPasswordInputModel, loginUserWithEmailAndPasswordInputModel, loginUserWithEmailAndPasswordOutputModel} from "./model"
+import {createUserWithEmailAndPasswordOutputModel , createUserWithEmailAndPasswordInputModel, loginUserWithEmailAndPasswordInputModel, loginUserWithEmailAndPasswordOutputModel, verifyUserWithTokenInputModel, verifyUserWithTokenOutputModel} from "./model"
 import { userService } from "../../services";
-import { setAuthenticationCookie } from "../../utils/cookie";
+import { getAuthenticationCookie, setAuthenticationCookie } from "../../utils/cookie";
 import { loginUserWithEmailAndPasswordInput } from "@repo/services/user/model";
 
 
@@ -50,18 +50,38 @@ export const authRouter = router({
     })
     .input(loginUserWithEmailAndPasswordInputModel)
     .output(loginUserWithEmailAndPasswordOutputModel)
-    .mutation(
-      async ({input,ctx})=>{
+    .mutation(async ({ input, ctx }) => {
+      const { email, password } = input;
+      const { id, token } = await userService.loginUserWithEmailAndPassword({ email, password });
 
-        const {email , password} = input
-        const {id , token} = await userService.loginUserWithEmailAndPassword({email , password})
-        
-        setAuthenticationCookie(ctx , token);
-        return {
-          id
-        }
+      setAuthenticationCookie(ctx, token);
+      return {
+        id,
+      };
+    }),
 
+  verifyAndDecodeUserToken: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: getPath("/verifyAndDecodeUserToken"),
+        tags: TAGS,
+      },
+    })
+    .input(verifyUserWithTokenInputModel)
+    .output(verifyUserWithTokenOutputModel)
+    .query(async ({ctx})=>{
+      
+      const token = getAuthenticationCookie(ctx)
+
+      if(!token) throw new Error("Something went wrong Please Register Again !!!")
+
+      const {id , email , fullName , profileImageUrl} = await userService.verifyAndDecodeUserToken(token)
+      return {
+        id,
+        email,
+        fullName,
+        profileImageUrl
       }
-
-    ),
+    }),
 });

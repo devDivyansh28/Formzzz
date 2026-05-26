@@ -20,3 +20,12 @@ export const loginUserWithEmailAndPasswordInputModel = z.object({
 export const loginUserWithEmailAndPasswordOutputModel = z.object({
    id : z.string().describe("Id of the User")
 })
+
+export const verifyUserWithTokenInputModel = z.undefined()
+
+export const verifyUserWithTokenOutputModel = z.object({
+    id : z.string("UUID of the User")
+     , email : z.email().describe("Email of the User")
+      , fullName : z.string().describe("Full Name of the User") ,
+       profileImageUrl : z.string().describe("Profile Image Url of the User").optional().nullable()
+})
