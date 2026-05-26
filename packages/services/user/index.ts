@@ -2,7 +2,7 @@ import {createHmac, randomBytes} from "node:crypto"
 import {db , eq} from "@repo/database"
 import {usersTable} from "@repo/database/models/user"
 
-import {type CreateUserWithEmailAndPasswordInputType , GenerateUserTokenPayloadType, createUserWithEmailAndPasswordInput, generateUserTokenPayload, loginUserWithEmailAndPasswordInput, loginUserWithEmailAndPasswordInputType} from "./model"
+import {type CreateUserWithEmailAndPasswordInputType , GenerateUserTokenPayloadType, createUserWithEmailAndPasswordInput, generateUserTokenPayload, loginUserWithEmailAndPasswordInput, LoginUserWithEmailAndPasswordInputType} from "./model"
 import { create } from "node:domain";
 import * as JWT from "jsonwebtoken"
 import {env} from "../env"
@@ -25,7 +25,9 @@ class UserService {
     
   } 
 
-
+  private async generateHash(password : string , salt : string){
+    return  createHmac('sha256',salt).update(password).digest('hex');
+  }
 
   public async createUserWithEmailAndPassword(payload : CreateUserWithEmailAndPasswordInputType){
      
@@ -38,8 +40,8 @@ class UserService {
 
     const salt = randomBytes(16).toString('hex') // Or we can have bcryptjs for hashing the password then storing it in the database
 
-    const hash = createHmac('sha256',salt).update(password).digest('hex');
-   
+    
+    const hash = await this.generateHash(password,salt);
 
     const userInsertResult = await db.insert(usersTable).values({email , fullName , password : hash , salt}).returning({
         id : usersTable.id
@@ -59,17 +61,19 @@ class UserService {
   }
 
 
-  public async loginUserWithEmailAndPassword(payload : loginUserWithEmailAndPasswordInputType){
+  public async loginUserWithEmailAndPassword(payload : LoginUserWithEmailAndPasswordInputType){
     // Validation of the data
     const {email , password} = await loginUserWithEmailAndPasswordInput.parseAsync(payload);
 
     // Check if User had registered or not
     const existingUser = await this.getUserByEmail(email);
     if(!existingUser) throw new Error("Please Register Before Login")
+    
+      if(!existingUser.password || !existingUser.salt){
+        throw new Error("Invalid Authentication Method! Please Login with Correct Method")
+      }
       
-    const salt = existingUser.salt 
-
-     const hash = createHmac('sha256',salt).update(password).digest('hex');
+     const hash = await this.generateHash(password,existingUser.salt);
 
      if(hash !== existingUser.password){
       throw new Error("Wrong Credentials! Better Luck Next Time")

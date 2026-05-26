@@ -22,4 +22,4 @@ export type CreateUserWithEmailAndPasswordInputType = z.infer<typeof createUserW
 
 export type GenerateUserTokenPayloadType =  z.infer<typeof generateUserTokenPayload>
 
-export type loginUserWithEmailAndPasswordInputType = z.infer<typeof loginUserWithEmailAndPasswordInput>
+export type LoginUserWithEmailAndPasswordInputType = z.infer<typeof loginUserWithEmailAndPasswordInput>
