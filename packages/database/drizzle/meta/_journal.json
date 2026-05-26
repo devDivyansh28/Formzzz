@@ -36,6 +36,20 @@
       "when": 1779816970873,
       "tag": "0004_medical_kronos",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779819692554,
+      "tag": "0005_chief_mauler",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1779820426679,
+      "tag": "0006_simple_mesmero",
+      "breakpoints": true
     }
   ]
 }

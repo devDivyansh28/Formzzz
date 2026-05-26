@@ -1,0 +1,1 @@
+ALTER TABLE "forms_fields" ADD CONSTRAINT "forms_fields_form_id_index_unique" UNIQUE("form_id","index");
