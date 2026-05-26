@@ -11,3 +11,12 @@ export const createUserWithEmailAndPasswordInputModel= z.object({
 export const createUserWithEmailAndPasswordOutputModel = z.object({
     id : z.string().describe("id of the User Created")
 })
+
+export const loginUserWithEmailAndPasswordInputModel = z.object({
+    email : z.email().describe("Email of the User"),
+    password : z.string().describe("Password of the User")
+})
+
+export const loginUserWithEmailAndPasswordOutputModel = z.object({
+   id : z.string().describe("Id of the User")
+})

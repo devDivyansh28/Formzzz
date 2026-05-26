@@ -8,7 +8,8 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/ui
 import { Input } from "~/components/ui/input";
 import { useSignup } from "~/hooks/api/auth";
 import { trpc } from "~/trpc/client";
-
+import { LoginForm } from "./login-form";
+import Link from "next/link";
 
 type SignupFormValues = {
   name: string;
@@ -137,7 +138,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Button>
 
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Already have an account? <Link href="/login">Sign in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
