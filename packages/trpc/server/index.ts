@@ -1,4 +1,6 @@
 import { authRouter } from "./routes/auth/route";
+import { formServiceRouter } from "./routes/form/route";
+
 import { publicProcedure, router } from "./trpc";
 import {z} from "zod";
 
@@ -15,7 +17,8 @@ export const serverRouter = router({
   //       message :  `Hello Mr. ${input.email}`
   //     }
   //   })
-  auth: authRouter
+  auth: authRouter,
+  form : formServiceRouter
 
 });
 
