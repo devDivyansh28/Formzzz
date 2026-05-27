@@ -63,6 +63,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   return (
     <Card {...props}>
       <CardHeader>
+        <div className="cascade-eyebrow w-fit">Start flowing</div>
         <CardTitle>Create an account</CardTitle>
         <CardDescription>Enter your information below to create your account</CardDescription>
       </CardHeader>
@@ -139,7 +140,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Button>
 
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <Link href="/login">Sign in</Link>
+                  Already have an account? <Link className="text-primary underline-offset-4 hover:underline" href="/login">Sign in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

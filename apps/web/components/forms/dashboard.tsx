@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, ExternalLink, FilePlus2, Search } from "lucide-react";
+import { ClipboardList, Droplets, ExternalLink, FilePlus2, Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -64,16 +64,31 @@ export function Dashboard() {
   };
 
   return (
-    <main className="bg-background min-h-screen">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-6 sm:px-8">
-        <header className="flex flex-col gap-5 border-b pb-6 md:flex-row md:items-end md:justify-between">
-          <div className="grid gap-2">
+    <main className="cascade-page min-h-screen">
+      <nav className="cascade-nav">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+          <div className="flex items-center gap-3">
+            <span className="cascade-side-panel flex size-10 items-center justify-center">
+              <Droplets aria-hidden className="size-5 text-primary" />
+            </span>
+            <span className="font-bold tracking-[-0.02em]">Cascade Forms</span>
+          </div>
+          <Button asChild variant="outline">
+            <Link href="/cascade-demo">Theme demo</Link>
+          </Button>
+        </div>
+      </nav>
+
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-8 sm:px-8">
+        <header className="cascade-form scroll-reveal relative overflow-hidden md:flex md:items-end md:justify-between">
+          <div className="cascade-hero-stripe cascade-animated absolute inset-0 opacity-40" />
+          <div className="relative z-10 grid gap-3">
             <Badge variant="outline" className="rounded-md px-2.5 py-1">
               Form workspace
             </Badge>
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Dynamic Forms</h1>
-              <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-6">
+              <h1>Dynamic Forms</h1>
+              <p className="cascade-copy mt-2 max-w-2xl">
                 Build forms, publish public links, and review submissions from one focused
                 dashboard.
               </p>
@@ -81,7 +96,7 @@ export function Dashboard() {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="w-full gap-2 md:w-auto">
+              <Button className="relative z-10 mt-6 w-full gap-2 md:mt-0 md:w-auto">
                 <FilePlus2 className="size-4" />
                 New form
               </Button>
@@ -127,11 +142,11 @@ export function Dashboard() {
           </Dialog>
         </header>
 
-        <section className="grid gap-4">
+        <section className="scroll-reveal grid gap-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-base font-semibold">Your forms</h2>
-              <p className="text-muted-foreground text-sm">{forms?.length ?? 0} total forms</p>
+              <h2>Your forms</h2>
+              <p className="cascade-copy">{forms?.length ?? 0} total forms</p>
             </div>
             <div className="relative w-full sm:max-w-xs">
               <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
@@ -153,7 +168,7 @@ export function Dashboard() {
           ) : filteredForms.length ? (
             <div className="grid gap-3 md:grid-cols-2">
               {filteredForms.map((form) => (
-                <Card key={form.formId} className="rounded-lg">
+                <Card key={form.formId}>
                   <CardHeader className="gap-3">
                     <div className="flex items-start justify-between gap-3">
                       <CardTitle className="text-lg">{form.title}</CardTitle>
@@ -161,7 +176,7 @@ export function Dashboard() {
                         Active
                       </Badge>
                     </div>
-                    <p className="text-muted-foreground line-clamp-2 min-h-10 text-sm leading-5">
+                    <p className="cascade-copy line-clamp-2 min-h-10">
                       {form.description || "No description yet."}
                     </p>
                   </CardHeader>
@@ -183,10 +198,10 @@ export function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="flex min-h-64 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+            <div className="cascade-form flex min-h-64 flex-col items-center justify-center border-dashed p-8 text-center">
               <FilePlus2 className="text-muted-foreground size-10" />
               <h3 className="mt-4 text-lg font-semibold">No forms found</h3>
-              <p className="text-muted-foreground mt-2 max-w-sm text-sm">
+              <p className="cascade-copy mt-2 max-w-sm">
                 Create your first form to start collecting structured submissions.
               </p>
             </div>
