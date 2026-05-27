@@ -23,7 +23,7 @@ export const formFieldTable = pgTable(
 
     type: fieldTypeEnum("type").notNull(),
 
-    formId: uuid("form_id").references(() => formTable.id),
+    formId: uuid("form_id").references(() => formTable.id).notNull(),
 
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),

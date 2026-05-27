@@ -50,6 +50,20 @@
       "when": 1779820426679,
       "tag": "0006_simple_mesmero",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1779870570874,
+      "tag": "0007_medical_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1779889574549,
+      "tag": "0008_unusual_talon",
+      "breakpoints": true
     }
   ]
 }
