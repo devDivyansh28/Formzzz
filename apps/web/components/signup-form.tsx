@@ -1,14 +1,10 @@
 import { useForm } from "react-hook-form";
-import { string } from "zod";
-import { id } from "zod/v4/locales";
 
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { useSignup } from "~/hooks/api/auth";
-import { trpc } from "~/trpc/client";
-import { LoginForm } from "./login-form";
 import Link from "next/link";
 import {useRouter} from "next/navigation"
 type SignupFormValues = {

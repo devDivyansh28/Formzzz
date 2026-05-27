@@ -20,12 +20,26 @@ import { useLogin } from "~/hooks/api/auth"
 import { useForm ,} from "react-hook-form"
 
 import {useRouter} from "next/navigation"
+import Link from "next/link"
 
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
+const getServerError = (error: unknown) => {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+    };
+  }
+
+  return {
+    name: "server",
+    message: "Unable to login. Please try again.",
+  };
+};
 
 export function LoginForm({
   className,
@@ -55,18 +69,20 @@ export function LoginForm({
       console.log(`Id Recieved is ${id}`)
       router.replace("/dashboard");
 
-    }catch(error : any){
-     if (error.name === "email") {
+    }catch(error){
+     const serverError = getServerError(error);
+
+     if (serverError.name === "email") {
        setError("email", {
          type: "server",
-         message: error.message,
+         message: serverError.message,
        });
      }
 
-     if (error.name === "password") {
+     if (serverError.name === "password") {
        setError("password", {
          type: "server",
-         message: error.message,
+         message: serverError.message,
        });
      }
     }
@@ -123,7 +139,7 @@ export function LoginForm({
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  Don&apos;t have an account? <Link href="/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

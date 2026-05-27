@@ -1,6 +1,7 @@
 import { trpc } from "~/trpc/client";
 
 export const createForm = () => {
+  const utils = trpc.useUtils();
   const {
     mutateAsync: createFormAsync,
     mutate: createFormsync,
@@ -9,7 +10,11 @@ export const createForm = () => {
     isIdle,
     isSuccess,
     status,
-  } = trpc.form.createForm.useMutation();
+  } = trpc.form.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.form.listAllForms.invalidate();
+    },
+  });
 
   return {
     createFormAsync,
@@ -48,6 +53,7 @@ export const listAllForms = () => {
 };
 
 export const createFormField = () => {
+  const utils = trpc.useUtils();
   const {
     mutateAsync: createFormFieldAsync,
     mutate: createFormField,
@@ -56,7 +62,11 @@ export const createFormField = () => {
     isIdle,
     isSuccess,
     status,
-  } = trpc.form.createFormField.useMutation();
+  } = trpc.form.createFormField.useMutation({
+    onSuccess: async (_data, variables) => {
+      await utils.form.getForm.invalidate({ formId: variables.formId });
+    },
+  });
 
   return {
     createFormFieldAsync,
@@ -70,6 +80,7 @@ export const createFormField = () => {
 };
 
 export const updateFormField = () => {
+  const utils = trpc.useUtils();
   const {
     mutateAsync: updateFormFieldAsync,
     mutate: updateFormField,
@@ -78,7 +89,11 @@ export const updateFormField = () => {
     isIdle,
     isSuccess,
     status,
-  } = trpc.form.updateFormField.useMutation();
+  } = trpc.form.updateFormField.useMutation({
+    onSuccess: async () => {
+      await utils.form.getForm.invalidate();
+    },
+  });
 
   return {
     updateFormFieldAsync,
@@ -114,6 +129,7 @@ export const getAllField = () => {
 };
 
 export const deleteFormField = () => {
+  const utils = trpc.useUtils();
   const {
     mutateAsync: deleteFormFieldAsync,
     mutate: deleteFormField,
@@ -122,7 +138,11 @@ export const deleteFormField = () => {
     isIdle,
     isSuccess,
     status,
-  } = trpc.form.deleteFormField.useMutation();
+  } = trpc.form.deleteFormField.useMutation({
+    onSuccess: async () => {
+      await utils.form.getForm.invalidate();
+    },
+  });
 
   return {
     deleteFormFieldAsync,
@@ -142,6 +162,7 @@ export const getForm = () => {
 };
 
 export const submitForm = () => {
+  const utils = trpc.useUtils();
   const {
     mutateAsync: submitFormAsync,
     mutate: submitForm,
@@ -150,7 +171,11 @@ export const submitForm = () => {
     isIdle,
     isSuccess,
     status,
-  } = trpc.form.submitForm.useMutation();
+  } = trpc.form.submitForm.useMutation({
+    onSuccess: async (_data, variables) => {
+      await utils.form.getFormSubmissions.invalidate({ formId: variables.formId });
+    },
+  });
 
   return {
     submitFormAsync,

@@ -1,20 +1,21 @@
 "use client"
 import { getUser } from "~/hooks/api/auth";
-import { api } from "~/trpc/server";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default  function Home() {
   const router = useRouter()
-  const { userInfo } = getUser();
+  const { userInfo, isLoading, isError } = getUser();
 
  useEffect( ()=>{
+   if (isLoading) return;
+
    if (userInfo && userInfo.id) {
      router.replace("/dashboard");
    } else {
      router.replace("/login");
    }
- },[userInfo , router]
+ },[userInfo , isError, isLoading, router]
  )
  
 
@@ -22,7 +23,7 @@ export default  function Home() {
     
     <main className="min-h-screen min-w-screen flex justify-center items-center">
       <div>
-        <h2> Server Message : {"Hello world"}</h2>
+        <h2 className="text-muted-foreground text-sm">Loading your workspace...</h2>
       </div>
     </main>
   );
